@@ -1,0 +1,118 @@
+{
+ "devices": {
+  "fall-board": {
+   "device_id": "fall-board",
+   "model": "跌倒板（ESP32-S3 + 雷达/视觉）",
+   "mac": "84:f7:03:xx:xx:xx",
+   "mqtt_device_id": "esp32s3-cam-01",
+   "firmware_project": "/opt/firmware/fall-board",
+   "board_config": null,
+   "capabilities": [
+    "fall_detect",
+    "ota",
+    "telemetry"
+   ],
+   "notes": "跌倒检测主板（COMxx 串口调试）",
+   "registered_at": "2025-08-19 00:00:00",
+   "last_seen": "2026-08-20 03:13:19",
+   "current_version": "v1.6.1",
+   "ota_verified": true,
+   "runtime_commands": [
+    "ota_check"
+   ]
+  },
+  "board-s3-36ac": {
+   "device_id": "board-s3-36ac",
+   "model": "云端烧录板（ESP32-S3 N16R8，v12 指令执行器）",
+   "mac": "xx:xx:xx:xx:xx:xx",
+   "mqtt_device_id": "ESP32_8436AC",
+   "command_id": "flasher-board",
+   "firmware_project": "/opt/firmware/esp-flasher-proto",
+   "board_config": null,
+   "capabilities": [
+    "flasher",
+    "command_channel",
+    "mqtt_events",
+    "log_echo"
+   ],
+   "notes": "烧录板 v12：MQTT 指令执行器（fall/commands/flasher-board），事件 fall/flasher/events，日志 fall/flasher/log；GPIO1/2 UART 烧录口 + GPIO48 LED；历史：OTA 往返验证 v0.1.0->v0.1.2（board-template 时期）",
+   "registered_at": "2025-08-19 00:00:00",
+   "last_seen": "2026-08-21 02:40:00",
+   "current_version": "v12",
+   "ota_verified": false,
+   "runtime_commands": [
+    "flash_start",
+    "abort",
+    "status"
+   ]
+  },
+  "board-s3-5798": {
+   "device_id": "board-s3-5798",
+   "model": "ESP32-S3 新板（2026-08-21 到货）",
+   "mac": "xx:xx:xx:xx:xx:xx",
+   "mqtt_device_id": "board-s3-5798",
+   "firmware_project": "/opt/firmware/board-template",
+   "board_config": "boards/board-s3-5798.h",
+   "capabilities": [
+    "ota",
+    "telemetry"
+   ],
+   "notes": "首烧引导固件 v0.1.0 成功（烧录板端到端验证），遥测正常",
+   "registered_at": "2026-08-21 19:44:53",
+   "last_seen": "",
+   "current_version": "",
+   "ota_verified": false,
+   "runtime_commands": [
+    "ota_check",
+    "led_on",
+    "led_off",
+    "led_green_on",
+    "led_blue_on"
+   ]
+  },
+  "board-s3-477c": {
+   "device_id": "board-s3-477c",
+   "model": "ESP32-S3 怪板（已修复）",
+   "mac": "xx:xx:xx:xx:xx:xx",
+   "mqtt_device_id": "board-s3-477c",
+   "firmware_project": "/opt/firmware/board-template",
+   "board_config": "boards/board-s3-477c.h",
+   "capabilities": [
+    "ota",
+    "telemetry"
+   ],
+   "notes": "dev_first_flash 自动接入：首烧引导固件 v0.1.0，遥测正常",
+   "registered_at": "2026-08-21 20:22:12",
+   "last_seen": "",
+   "current_version": "",
+   "ota_verified": false,
+   "runtime_commands": [
+    "ota_check",
+    "led_on",
+    "led_off"
+   ]
+  },
+  "evo-voice-v1": {
+   "device_id": "evo-voice-v1",
+   "model": "语音板（ESP32-S3 N16R8 + INMP441 + MAX98357A，原 OLED 显示板改造）",
+   "mac": "xx:xx:xx:xx:xx:xx",
+   "mqtt_device_id": "ESP32_0f81D8",
+   "firmware_project": "xiaozhi-esp32 v2.4.2（板卡 evo-voice-v1，见 evo-voice-terminal 仓库）",
+   "board_config": null,
+   "capabilities": [
+    "voice",
+    "fall_alert",
+    "ota",
+    "wifi"
+   ],
+   "notes": "小安语音板（2026-08-25 由 OLED 显示板改造）：唤醒词「你好小安」，INMP441(12/13/21)+MAX98357A(4/14/18/5)，音量30，PSRAM OCT 40M；OTA 走 xiaozhi-server /xiaozhi/ota/；供电需充电器（USB 播放欠压）",
+   "registered_at": "2025-08-19 00:00:00",
+   "last_seen": "",
+   "current_version": "v2.4.2",
+   "ota_verified": false,
+   "runtime_commands": [
+    "ota_check"
+   ]
+  }
+ }
+}
