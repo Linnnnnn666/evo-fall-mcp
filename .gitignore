@@ -1,0 +1,12 @@
+# Runtime state
+flash_events.jsonl
+online_state.json
+confirm_queue/
+first_flash/
+*.log
+# Local config
+.env
+devices.json
+# Python
+__pycache__/
+*.pyc
