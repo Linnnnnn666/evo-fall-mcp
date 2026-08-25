@@ -72,6 +72,9 @@ DSH-1（干活者，headless profile）
 DSH-2 造出 `base64-codec` / `reverse-string` / `text-stats` 三个插件装入 →
 DSH-1 之后自带这些能力（**quarantine/ 隔离区里躺着装坏过的插件——可回滚的进化**）。
 
+> 📦 **实物都在本仓库**：插件产物见 [`plugins/`](plugins/README.md)（DSH-2 真实制造的进化成果）；
+> 双角色装配全流程见 [`docs/DSH_EVOLUTION_SETUP.md`](docs/DSH_EVOLUTION_SETUP.md)。
+
 ### 双层闭环（合起来看）
 
 ```

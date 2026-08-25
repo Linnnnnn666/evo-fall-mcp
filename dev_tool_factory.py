@@ -24,7 +24,7 @@ EVOLUTION_LOG = os.path.join(os.path.dirname(os.path.abspath(__file__)), "evolut
 PLUGIN_REQUEST_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "plugin_requests")
 PLUGINS_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "plugins.json")
 PLUGINS_DIR = "/opt/dsh-plugins"
-HEADLESS_PATCH = "/root/.dsh/profiles/headless/cordis.patch.yml"
+HEADLESS_PATCH = "~/.dsh/profiles/headless/cordis.patch.yml"
 DEVICES_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "devices.json")
 OTA_ROOT = "/opt/ota"
 
@@ -684,7 +684,7 @@ PLUGIN_BUILD_TEMPLATE = """你是插件制造与安装工程师（DSH-2）。请
    d) 支持 Linux
    e) 代码安全核对：下载或查看仓库关键文件（package.json / 入口 / 构建产物），检查无混淆代码、无凭据窃取、无数据外发、无危险 shell 操作；有疑虑就放弃
 3. 安装（核对通过后）：
-   cd /root/.dsh/profiles/headless
+   cd ~/.dsh/profiles/headless
    export NVM_DIR="$HOME/.nvm"; . "$NVM_DIR/nvm.sh"; nvm use default >/dev/null 2>&1
    dsh plugin --profile headless add github:<owner>/<repo>
    若 GitHub 直连失败，用镜像：dsh plugin --profile headless add https://gh-proxy.com/https://github.com/<owner>/<repo>.git
@@ -747,12 +747,12 @@ HEALTH_REPAIR_TEMPLATE = """你是 EvoAgent 系统的修复工程师（DSH-2，�
 【自动修复已尝试】{auto_result}
 
 【你的任务】
-1. 读取 /root/.dsh/profiles/headless/cordis.patch.yml，诊断问题根因（YAML 结构损坏 / insert 引用文件缺失 / 插件间冲突等）
+1. 读取 ~/.dsh/profiles/headless/cordis.patch.yml，诊断问题根因（YAML 结构损坏 / insert 引用文件缺失 / 插件间冲突等）
 2. 修复原则：保持 DSH-1 可用前提下最小改动。优先：移除或注释坏 insert 条目 + 把坏插件文件移到 /opt/dsh-plugins/quarantine/
 3. 全程遵守：
-   - 先备份：cp /root/.dsh/profiles/headless/cordis.patch.yml /root/.dsh/profiles/headless/cordis.patch.yml.bak.$(date +%s)
+   - 先备份：cp ~/.dsh/profiles/headless/cordis.patch.yml ~/.dsh/profiles/headless/cordis.patch.yml.bak.$(date +%s)
    - 原子写：先写临时文件再 mv 覆盖（防止半写）
-   - 写完用 python3 -c "import yaml;yaml.safe_load(open('/root/.dsh/profiles/headless/cordis.patch.yml'))" 校验 YAML 合法
+   - 写完用 python3 -c "import yaml;yaml.safe_load(open('~/.dsh/profiles/headless/cordis.patch.yml'))" 校验 YAML 合法
 4. 修复后验证：
    - YAML 合法 + patch 中所有 insert 引用文件存在
    - 冒烟测试：dsh --profile headless "只回复两个字：健康"（若 DSH 无法启动说明没修好，继续诊断；冒烟前可用 bash 工具 pwd 触发工具集全量开放）
@@ -769,7 +769,7 @@ def _node_bin() -> str:
     n = _sh.which("node")
     if n:
         return n
-    for cand in sorted(__import__("glob").glob("/root/.nvm/versions/node/*/bin/node"), reverse=True):
+    for cand in sorted(__import__("glob").glob(os.path.expanduser("~/.nvm/versions/node/*/bin/node")), reverse=True):
         return cand
     return "node"
 
