@@ -201,12 +201,44 @@ DSH 改完 C++ 代码
 
 ## 快速开始
 
+> 分层入口：**[0 层 · 先看效果](#)**（演示视频，规划中）· **[1 层 · 纯软件 5 分钟跑通](#快速开始)**（本段，无需硬件）·
+> **[2 层 · 单板体验](#)**（烧录一块 ESP32-S3）· **[3 层 · 完整系统](docs/QUICK_START.md)**（服务器+中枢+固件+语音板全链路）
+
+### 1 层：纯软件 5 分钟跑通（无需硬件）
+
 ```bash
-pip install paho-mqtt httpx websockets dashscope
-cp .env.example .env   # 填写 MQTT/API keys（凭据全部环境变量化）
+# 1. 依赖（实测清单）
+pip install paho-mqtt httpx websockets dashscope pyyaml aiohttp
+
+# 2. 配置（凭据全部环境变量化）
+cp .env.example .env          # 填 MQTT/API keys（无 MQTT 时查询类工具也能用）
 cp devices.example.json devices.json
-python3 mcp_server.py  # 监听 ws://127.0.0.1:8002/mcp/
+
+# 3. 启动能力中枢（MCP 服务器）
+python3 mcp_server.py         # 监听 ws://127.0.0.1:8002/mcp/，47 个工具
+
+# 4. 验证：用任意 MCP 客户端调用只读工具
+#    例如 dev_list_boards（设备注册表）/ query_system_status（服务器状态）
 ```
+
+**真实调用示例**（MCP JSON-RPC 2.0）：
+
+```json
+→ {"jsonrpc":"2.0","id":1,"method":"initialize","params":{...}}
+← {"jsonrpc":"2.0","id":1,"result":{"serverInfo":{"name":"fall-monitor-mcp","version":"1.0.0"}}}
+
+→ {"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}
+← {"jsonrpc":"2.0","id":2,"result":{"tools":[{...47 个工具...}]}}
+
+→ {"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"dev_list_boards","arguments":{}}}
+← {"jsonrpc":"2.0","id":3,"result":{"content":[{"type":"text","text":"{\"ok\":true,\"devices\":[{\"device_id\":\"board-xxx\",\"model\":\"...\",\"capabilities\":[\"ota\",\"telemetry\"]}]}"}]}}
+```
+
+5 分钟内：起服务 → 看到 47 个工具 → 调用只读工具拿到真实返回——**不需要任何硬件**。
+
+### 3 层：完整系统
+
+从零搭建「服务器 + 能力中枢 + 固件 + 语音板」全链路见 **[docs/QUICK_START.md](docs/QUICK_START.md)**（分步指南，含每步耗时与最低硬件要求）。
 
 ## 安全设计
 
