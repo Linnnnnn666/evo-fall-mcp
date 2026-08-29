@@ -2,6 +2,8 @@
 
 > **一句话**：用语音或文字指挥 AI 智能体，为 ESP32 板卡完成「写固件 → 编译 → OTA 部署 → 遥测验收 → 经验沉淀」的完整开发闭环——**核心链路已验证、架构完整、持续迭代中的系统原型**，双层自进化，人在环兜底。
 
+> **English abstract**: An **MCP (Model Context Protocol) server that turns an LLM agent into a hardware developer** — 47 tools covering firmware build/flash/**OTA** deployment, telemetry **self-validation**, TTS broadcasting, a **tool factory**, an **experience memory**, and a plugin poller for **self-evolving** capabilities. Bridges AI agents (voice or chat) to **ESP32** boards over MQTT/HTTP/WebSocket. Python (asyncio), stdio/websocket transports, MIT licensed. Part of the EvoAgent system — see [evo-firmware](https://github.com/Linnnnnn666/evo-firmware) and [evo-voice-terminal](https://github.com/Linnnnnn666/evo-voice-terminal).
+
 ```
                               ┌──────────────┐
                               │     用户     │
