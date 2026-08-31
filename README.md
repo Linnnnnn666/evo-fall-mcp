@@ -8,7 +8,7 @@
                               ┌──────────────┐
                               │     用户     │
                               └──────┬───────┘
-                语音「你好小安」        │       文字（DSH 会话）
+                语音「你好小智」        │       文字（DSH 会话）
                      │               │              │
                      ▼               ▼              ▼
         ┌──────────────────┐  ┌────────────────────────────┐
@@ -134,7 +134,7 @@ DSH-1 之后自带这些能力（**quarantine/ 隔离区里躺着装坏过的插
 |------|------|--------|
 | **[evo-firmware](https://github.com/Linnnnnn666/evo-firmware)** | 硬件端 | ESP32-S3 固件集合：跌倒检测板（端侧 AI）、云端烧录板、配置化引导固件 |
 | **[evo-fall-mcp](https://github.com/Linnnnnn666/evo-fall-mcp)** | 能力中枢 | MCP 服务器（47 工具）：部署/烧录/播报/自验收/自进化，连接 AI 与硬件 |
-| **[evo-voice-terminal](https://github.com/Linnnnnn666/evo-voice-terminal)** | 语音入口 | 语音板板卡包：唤醒「你好小安」→ 语音对话 → TTS 播报 |
+| **[evo-voice-terminal](https://github.com/Linnnnnn666/evo-voice-terminal)** | 语音入口 | 语音板板卡包：唤醒「你好小智」→ 语音对话 → TTS 播报 |
 
 **本仓库是其中的「能力中枢」**——AI 与硬件之间的"手"：所有部署、烧录、播报、验收、进化动作都通过这里的工具完成。
 
