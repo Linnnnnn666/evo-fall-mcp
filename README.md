@@ -211,6 +211,18 @@ DSH 改完 C++ 代码
 > 分层入口：**[0 层 · 先看效果](#)**（演示视频，规划中）· **[1 层 · 纯软件 5 分钟跑通](#快速开始)**（本段，无需硬件）·
 > **[2 层 · 单板体验](#)**（烧录一块 ESP32-S3）· **[3 层 · 完整系统](docs/QUICK_START.md)**（服务器+中枢+固件+语音板全链路）
 
+### 0.5 层：Docker 一键启动（完整栈，推荐）
+
+```bash
+docker compose up -d --build     # fall-mcp + mqtt + caddy + xiaozhi-server
+```
+
+- 首次：`cp .env.example .env` 填凭据；`mkdir -p mcp-data/{dynamic_tools,confirm_queue,plugin_requests,task_results,voice_alarm,onboarding_archives,state}`
+- **系统记忆 = 卷**：`dynamic_tools/`（工具工厂产物 + .git 回滚库）、`evolution.log`（进化审计日志）、队列/设备表全部持久化——容器重建不丢"进化成果"
+- 已实测：镜像构建通过，MCP 握手 OK（27+ 工具在线），MQTT flash-monitor 订阅成功
+- 定制细节：`xiaozhi-server` 默认官方镜像，EvoAgent 定制版（notify 主动播报等）用 `docker/xiaozhi-server/Dockerfile` 自建后替换 image
+- 网络说明：compose 全部 `network_mode: host`（fall-mcp 依赖 localhost MQTT/API/宿主 DSH-2），端口与现有宿主服务一致可共存
+
 ### 1 层：纯软件 5 分钟跑通（无需硬件）
 
 ```bash
@@ -260,6 +272,8 @@ python3 mcp_server.py         # 监听 ws://127.0.0.1:8002/mcp/，47 个工具
 - `feat(tools)` 动态工具集 + 配置示例（凭据 env 化）（08-21）
 - `docs` 架构文档：自进化六层/人在环验收/开发者模式门控（08-23）
 - `chore` MIT 许可（08-25）
+- `feat(docker)` 完整栈容器化——fall-mcp/mqtt/caddy/xiaozhi-server compose 一键启动，系统记忆卷持久化（09-06）
+- `feat(evidence)` 自进化档案——evolution.log 审计日志 + manifest 快照公开（09-06）
 
 ## License
 

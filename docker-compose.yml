@@ -1,0 +1,75 @@
+# ============================================================
+# EvoAgent 一键启动（Docker Compose）
+# 组成：fall-mcp（能力中枢，自建镜像）+ mqtt + caddy + xiaozhi-server
+# 网络：host（fall-mcp 依赖 localhost:1883 / 127.0.0.1:8000 / 宿主 DSH-2）
+# 用法：
+#   cp .env.example .env && 填入真实凭据
+#   首次：mkdir -p mcp-data/{dynamic_tools,confirm_queue,plugin_requests,task_results,voice_alarm,onboarding_archives}
+#   docker compose up -d --build
+#   （xiaozhi-server 默认用官方镜像，EvoAgent 定制版请本地构建后替换 image）
+# ============================================================
+services:
+  fall-mcp:
+    build: .
+    container_name: evoagent-fall-mcp
+    restart: always
+    network_mode: host
+    env_file: .env
+    environment:
+      - MCP_HOST=127.0.0.1
+      - MCP_PORT=8002
+    volumes:
+      # 系统记忆（卷持久化；dynamic_tools 建议先 git init 作为回滚库）
+      - ./mcp-data/dynamic_tools:/opt/fall-mcp/dynamic_tools
+      - ./mcp-data/confirm_queue:/opt/fall-mcp/confirm_queue
+      - ./mcp-data/plugin_requests:/opt/fall-mcp/plugin_requests
+      - ./mcp-data/task_results:/opt/fall-mcp/task_results
+      - ./mcp-data/voice_alarm:/opt/fall-mcp/voice_alarm
+      - ./mcp-data/onboarding_archives:/opt/fall-mcp/onboarding_archives
+      - ./mcp-data/state/evolution.log:/opt/fall-mcp/evolution.log
+      - ./mcp-data/state/devices.json:/opt/fall-mcp/devices.json
+      - ./mcp-data/state/developer_mode.json:/opt/fall-mcp/developer_mode.json
+      - ./mcp-data/state/online_state.json:/opt/fall-mcp/online_state.json
+      - ./mcp-data/state/flash_events.jsonl:/opt/fall-mcp/flash_events.jsonl
+    depends_on:
+      - mqtt
+
+  mqtt:
+    image: eclipse-mosquitto:2
+    container_name: evoagent-mqtt
+    restart: always
+    network_mode: host
+    volumes:
+      - ./mqtt/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - ./mqtt/data:/mosquitto/data
+      - ./mqtt/log:/mosquitto/log
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: evoagent-caddy
+    restart: always
+    network_mode: host
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./ota:/srv/firmware:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - mqtt
+
+  # 语音服务：默认官方镜像（上游）；EvoAgent 定制版（notify/keep-alive 等）
+  # 请用 docker/xiaozhi-server/Dockerfile 本地构建后替换 image 为 evoagent-xiaozhi-server:local
+  xiaozhi-server:
+    image: ghcr.nju.edu.cn/xinnan-tech/xiaozhi-esp32-server:server_latest
+    container_name: evoagent-xiaozhi-server
+    restart: always
+    network_mode: host
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./xiaozhi-data:/opt/xiaozhi-esp32-server/data
+      - ./xiaozhi-models:/opt/xiaozhi-esp32-server/models
+
+volumes:
+  caddy_data:
+  caddy_config:

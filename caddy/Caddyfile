@@ -1,0 +1,36 @@
+# EvoAgent 反代模板（完整栈）
+# 端口约定：api=8000 · xiaozhi-server ws=8001 / http=8003 · fall-mcp=8002（内部）
+# bootstrapping 提示：Caddy 容器用 host 网络，host.docker.internal 即宿主机
+:80 {
+    encode gzip
+
+    # 能力中枢 API（可选组件，fall-api）
+    reverse_proxy /api/* host.docker.internal:8000
+    reverse_proxy /health host.docker.internal:8000
+    reverse_proxy /ws/* host.docker.internal:8000
+
+    # 固件仓库（OTA 静态目录）
+    handle_path /firmware/* {
+        root * /srv/firmware
+        file_server
+    }
+
+    # xiaozhi 语音服务（语音板）
+    handle /xiaozhi/ota/* {
+        reverse_proxy host.docker.internal:8003
+    }
+    handle /xiaozhi/* {
+        reverse_proxy host.docker.internal:8001
+    }
+
+    header {
+        X-Content-Type-Options "nosniff"
+    }
+
+    log {
+        output file /var/log/caddy/access.log {
+            roll_size 100MiB
+            roll_keep 10
+        }
+    }
+}

@@ -1,0 +1,11 @@
+# 构建上下文排除：凭据/运行时状态/文档
+.env
+env
+*_queue/
+voice_alarm/
+*.json
+*.log
+__pycache__/
+*.bak.*
+docs/
+plugins/README.md

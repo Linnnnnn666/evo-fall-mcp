@@ -1,0 +1,6 @@
+# EvoAgent fall-mcp 运行依赖（容器化）
+httpx>=0.28
+websockets>=14.2
+requests>=2.32
+PyYAML>=6.0
+paho-mqtt>=2.1
