@@ -1,0 +1,215 @@
+# manifest.json sanitized snapshot 20260906-1758
+{
+ "tools": {
+  "ask_user_requirement": {
+   "name": "ask_user_requirement",
+   "description": "当用户表示要做一个工具/脚本/功能，但没有说明具体做什么时，使用本工具向用户询问功能需求。它会给出引导性问题，请用户补充：① 工具的名称（英文小写蛇形，如 query_xxx）；② 具体要实现什么功能、输入什么参数、输出什么结果；③ 数据来源（优先中国大陆可直接访问的公开 API，如 bilibili / github / 国内公开接口，禁止海外不可达接口）。返回 JSON 中包含需要用户回答的问",
+   "file": "ask_user_requirement.py",
+   "version": "1.0.0",
+   "created_at": "2026-08-19 19:54:27",
+   "created_by": "manual",
+   "calls": 2,
+   "last_called_at": "2026-08-24 21:25:50"
+  },
+  "github_repo_info": {
+   "name": "github_repo_info",
+   "description": "查询GitHub仓库的star数、fork数和主要编程语言。输入仓库名如owner/repo。返回成功包含stars, forks, language字段；失败返回错误原因。",
+   "file": "github_repo_info.py",
+   "version": "1.0.0",
+   "created_at": "2026-08-19 19:54:27",
+   "created_by": "manual",
+   "calls": 0,
+   "last_called_at": null
+  },
+  "query_bili_up_info": {
+   "name": "query_bili_up_info",
+   "description": "查询B站（bilibili）UP主（用户）的基本信息，包括：昵称、粉丝数（粉丝数量）、关注数（关注的人的数量）、投稿视频数，以及头像、个人签名、等级、认证信息等。输入参数为 B站 UID 数字（纯数字，如 2、546195、1651559828），也可以输入 B站个人空间链接或含数字UID的文本，工具会自动提取 UID。如果用户只给了 UP主名字而非 UID，请先向用户索要 UID。",
+   "file": "query_bili_up_info.py",
+   "version": "1.0.0",
+   "created_at": "2026-08-19 19:54:27",
+   "created_by": "manual",
+   "calls": 1,
+   "last_called_at": "2026-08-19 21:59:24"
+  },
+  "query_bili_video_stats": {
+   "name": "query_bili_video_stats",
+   "description": "查询B站（bilibili）视频的播放量、弹幕、点赞、收藏等信息。推荐使用 keyword 参数：用户说出视频标题或关键词即可（如'尘世闲游'），工具会搜索并返回最多3个候选视频及其播放数据，请把候选播报给用户确认要查哪个；也可用 bvid（BV号）或 url（完整链接）直接查询。",
+   "file": "query_bili_video_stats.py",
+   "version": "1.0.0",
+   "created_at": "2026-08-19 19:54:27",
+   "created_by": "manual",
+   "calls": 0,
+   "last_called_at": null
+  },
+  "query_btc_price": {
+   "name": "query_btc_price",
+   "description": "查询比特币当前价格，返回美元（USD）和人民币（CNY）价格。",
+   "file": "query_btc_price.py",
+   "version": "1.0.0",
+   "created_at": "2026-08-19 19:54:27",
+   "created_by": "manual",
+   "calls": 0,
+   "last_called_at": null
+  },
+  "query_douban_movie": {
+   "name": "query_douban_movie",
+   "description": "查询电影的基本信息：片名、评分（优先豆瓣评分）、上映年份、导演。输入参数为电影名关键词（如『流浪地球』、『肖申克的救赎』、『inception』），返回匹配电影的 JSON 结果；未找到或请求失败时返回 ok:false 及原因。",
+   "file": "query_douban_movie.py",
+   "version": "1.0.0",
+   "created_at": "2026-08-19 19:54:27",
+   "created_by": "manual",
+   "calls": 0,
+   "last_called_at": null
+  },
+  "query_github_user": {
+   "name": "query_github_user",
+   "description": "查询GitHub用户的公开信息，包括用户名、粉丝数、公开仓库数、简介等。输入GitHub用户名即可查询。",
+   "file": "query_github_user.py",
+   "version": "1.0.0",
+   "created_at": "2026-08-19 19:54:27",
+   "created_by": "manual",
+   "calls": 0,
+   "last_called_at": null
+  },
+  "query_gold_price": {
+   "name": "query_gold_price",
+   "description": "查询今日黄金价格。数据来源为金投网（www.cngold.org）同源的国内公开行情接口 api.jijinhao.com（中国大陆可直接访问），返回现货黄金（伦敦金，美元/盎司）、黄金T+D（上海黄金交易所，元/克）、沪金主力（上海期货交易所，元/克）三种黄金报价，每项包含最新价、涨跌值、涨跌幅、开盘价、最高价、最低价与行情时间。可选参数 type 可限定只查其中一类：all（全部，默认）/ s",
+   "file": "query_gold_price.py",
+   "version": "1.0.0",
+   "created_at": "2026-08-19 19:54:27",
+   "created_by": "manual",
+   "calls": 3,
+   "last_called_at": "2026-08-21 04:38:42"
+  },
+  "query_silver_price": {
+   "name": "query_silver_price",
+   "description": "查询今日白银价格。数据来源为金投网（www.cngold.org）同源的国内公开行情接口 api.jijinhao.com（中国大陆可直接访问），返回现货白银（伦敦银/国际现货白银，美元/盎司）、白银T+D（上海黄金交易所 Ag(T+D)，元/千克）、沪银主力（上海期货交易所，元/千克）三种白银报价，每项包含最新价、涨跌值、涨跌幅、开盘价、最高价、最低价与行情时间。可选参数 type 可限定只查其",
+   "file": "query_silver_price.py",
+   "version": "1.0.0",
+   "created_at": "2026-08-19 19:54:27",
+   "created_by": "manual",
+   "calls": 0,
+   "last_called_at": null
+  },
+  "query_usd_cny_rate": {
+   "name": "query_usd_cny_rate",
+   "description": "查询今日美元兑人民币（USD/CNY）汇率。数据来源为中国银行外汇牌价公开页面（中国银行官网，中国大陆可直接访问），返回 1 美元兑人民币汇率（中行折算价，即中间价）、现汇买入价、现汇卖出价、现钞买入价、现钞卖出价，以及该牌价的发布时间。无需任何参数。",
+   "file": "query_usd_cny_rate.py",
+   "version": "1.0.0",
+   "created_at": "2026-08-19 19:54:27",
+   "created_by": "manual",
+   "calls": 0,
+   "last_called_at": null
+  },
+  "query_ip_location": {
+   "name": "query_ip_location",
+   "description": "查询IP地址归属地：输入一个IPv4地址，返回其所在省份、城市和运营商（如 电信/联通/移动），以及完整归属地描述。数据来源为太平洋电脑网 whois 公开接口与百度开放数据（均为中国大陆可直接访问的公开API），境内IP精确到省市与运营商，境外IP返回国家/地区级信息。",
+   "file": "query_ip_location.py",
+   "version": "1.0.0",
+   "created_at": "2026-08-19 22:10:00",
+   "created_by": "manual",
+   "calls": 1,
+   "last_called_at": "2026-08-19 22:08:06"
+  },
+  "query_a_share_index": {
+   "name": "query_a_share_index",
+   "description": "查询A股主要指数最新行情（上证指数、深证成指、创业板指、沪深300、科创50等），返回最新点位（收盘价）、涨跌额、涨跌幅、今开、最高、最低、成交量、成交额及行情时间。可选参数 code 指定指数代码：sh000001(上证指数)、sz399001(深证成指)、sz399006(创业板指)、sh000300(沪深300)、sh000688(科创50)、sh000016(上证50)、sh000905(",
+   "file": "query_a_share_index.py",
+   "version": "1.0.0",
+   "created_at": "2026-08-19 19:56:15",
+   "created_by": "task-***",
+   "calls": 2,
+   "last_called_at": "2026-08-19 21:59:23"
+  },
+  "query_system_status": {
+   "name": "query_system_status",
+   "description": "查询本机（Linux）系统状态：运行时长（uptime）、最近一次开机/重启时间、当前负载（1/5/15 分钟平均负载）及 CPU 核心数。无需参数，数据读取自 /proc 系统文件，纯本地执行。",
+   "file": "query_system_status.py",
+   "version": "1.0.0",
+   "created_at": "2026-08-19 22:00:55",
+   "created_by": "task-***",
+   "calls": 3,
+   "last_called_at": "2026-08-22 16:38:03"
+  },
+  "query_board_telemetry": {
+   "name": "query_board_telemetry",
+   "description": "查询跌倒板（esp32s3-cam-01）等已接入设备的实时运行数据：内存、WiFi信号、运行时长、重启原因、固件版本，并给出健康分析（内存是否稳定、是否反复重启、信号是否正常）。当用户问'板子怎么样''板子正常吗''内存/信号如何''为什么重启'时调用。",
+   "file": "query_board_telemetry.py",
+   "version": "1.0.0",
+   "created_at": "2026-08-20 01:58:32",
+   "created_by": "task-***",
+   "calls": 19,
+   "last_called_at": "2026-08-25 00:09:13"
+  },
+  "base64_codec": {
+   "name": "base64_codec",
+   "description": "Base64 编解码工具（纯本机计算，不联网、不读写文件）：输入任意字符串（text），返回其标准 Base64（RFC 4648）编码结果 encoded；若该输入本身是合法 Base64 编码串（仅含 A-Za-z0-9+/，末尾可有 0-2 个 '='，长度合规），则同时返回解码后的原文 decoded。可用于文本与 Base64 互转、校验某字符串是否为合法 Base64、查看某串解码后的",
+   "file": "base64_codec.py",
+   "version": "1.0.0",
+   "created_at": "2026-08-21 04:22:02",
+   "created_by": "DSH",
+   "calls": 1,
+   "last_called_at": "2026-08-21 04:32:11"
+  },
+  "hash_string": {
+   "name": "hash_string",
+   "description": "字符串哈希计算工具：输入任意字符串（text），在本机计算并返回其 MD5 和 SHA256 哈希值（均为 32/64 位十六进制小写）。纯本地计算，无需联网，不访问任何外部接口，不读写本地文件。",
+   "file": "hash_string.py",
+   "version": "1.0.0",
+   "created_at": "2026-08-21 04:22:02",
+   "created_by": "DSH",
+   "calls": 1,
+   "last_called_at": "2026-08-21 04:32:11"
+  },
+  "inventory_ota_repo": {
+   "name": "inventory_ota_repo",
+   "description": "盘点本机 ~/ 固件仓库：列出每个设备（子目录）的版本目录数量、版本列表、最新版本、磁盘占用，校验各版本 manifest.json 的 sha256/size 与实际固件是否一致、latest.json 与最新版本目录是否一致，并给出仓库健康度判断（healthy/degraded）及问题清单。纯本地执行，无需网络。可选参数 repo_path 指定仓库根目录（默认 ~/）。当用户问'固件仓库情况''OTA 版本''盘点 ~/'时调用。",
+   "file": "inventory_ota_repo.py",
+   "version": "1.0.0",
+   "created_at": "2026-08-21 04:34:40",
+   "created_by": "task-***",
+   "calls": 3,
+   "last_called_at": "2026-08-24 22:52:38"
+  },
+  "list_tmp_old_files": {
+   "name": "list_tmp_old_files",
+   "description": "扫描本机目录（默认 /tmp）下超过 N 天未修改的旧文件，返回待清理清单：文件数、总大小、每个文件的最后修改时间与路径、目录内最早文件时间。纯只读扫描，不删除任何文件（实际删除需人工确认后另做）。可选参数 path 指定扫描目录（默认 /tmp）、days 指定天数阈值（默认 7）、max_files 限制返回文件条数（默认 200）。当用户问'清理 /tmp''找超过7天的临时文件''旧文件清单'时调用。",
+   "file": "list_tmp_old_files.py",
+   "version": "1.0.0",
+   "created_at": "2026-08-21 17:20:00",
+   "created_by": "task-***",
+   "calls": 0,
+   "last_called_at": null
+  },
+  "ask_user_confirm": {
+   "name": "ask_user_confirm",
+   "description": "向用户确认一个具体事项并等待回答：把问题写入确认队列（~/confirm_queue/<task_id>.jsonl），轮询等待用户在队列中给出回答（每 10 秒一次，默认最多 20 次约 200 秒），返回用户回答原文；超时未回答则返回confirmed=false（调用方按最合理默认假设继续）。典型场景：是否同意执行某操作、是否继续、选哪个方案、目标板是哪块等必须由用户拍板的事项。参数：question 必填（一次只问一件事，口语化可回答）；task_id 可选（默认按当前时间自动生成，建议用任务 ID）；max_loops 可选（轮询次数，默认 20）；interval 可选（轮询间隔秒数，默认 10）；wait 可选（false 时只写入问题不等待，默认 true）。",
+   "file": "ask_user_confirm.py",
+   "version": "1.0.0",
+   "created_at": "2026-08-21 17:26:09",
+   "created_by": "task-***",
+   "calls": 2,
+   "last_called_at": "2026-08-24 17:45:38"
+  },
+  "query_monster_hunter_players": {
+   "name": "query_monster_hunter_players",
+   "description": "查询 Steam 上怪物猎人（Monster Hunter）系列全部游戏的当前在线人数，包括《怪物猎人：世界》《怪物猎人：崛起》《怪物猎人：荒野》《怪物猎人：物语》等主游戏及冰原、曙光等大型 DLC。数据来自 Steam 官方公开 API。返回各游戏 appid、名称、当前在线人数、Steam 商店链接及合计在线人数。",
+   "file": "query_monster_hunter_players.py",
+   "version": "1.0.0",
+   "created_at": "2026-08-24 21:22:02",
+   "created_by": "manual",
+   "calls": 6,
+   "last_called_at": "2026-08-25 23:07:09"
+  },
+  "schedule_voice_announce": {
+   "name": "schedule_voice_announce",
+   "description": "定时语音播报：安排一个一次性语音播报任务（如\"今晚23:30语音叫我起床\"）。输入 target_time（HH:MM 表示今天，或 YYYY-MM-DD HH:MM[:SS]）和 text（要播报的话）。生成独立播报脚本并返回启动命令，bash 启动后常驻等待、到点自动推送 xiaozhi 语音服务（/api/push，APP_TOKEN 鉴权）播报；失败自动重试，已触发不重复播报，日志在 ~/voice_alarm/。",
+   "file": "schedule_voice_announce.py",
+   "version": "1.0.0",
+   "created_at": "2026-08-27 23:01:33",
+   "created_by": "task-***",
+   "calls": 0,
+   "last_called_at": null
+  }
+ }
+}
