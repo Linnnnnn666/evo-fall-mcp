@@ -1,0 +1,22 @@
+{
+  "capability": "二维码生成：把文本/链接生成二维码（返回二维码的 ASCII 或说明）",
+  "tools": [
+   {
+    "name": "generate_qrcode",
+    "desc": "把文本或链接生成二维码",
+    "input": "文本/链接",
+    "output": "二维码表示或成功说明",
+    "market_mapping": "由市场插件 dsh-qrcode 提供的 qrcode 工具覆盖（format=ascii 返回 ASCII 二维码，另支持 svg/png）"
+   }
+  ],
+  "task_type": "data-processing",
+  "urgency": "medium",
+  "requester_task": "测试 DSH-2 市场优先策略：先搜开源高star插件，找不到再自制",
+  "status": "done",
+  "started_at": "2026-08-19 21:23:26",
+  "done_at": "2026-08-19 21:26:00",
+  "source": "market",
+  "installed_plugin": "dsh-qrcode (github:hellosky983/dsh-qrcode, v0.2.0, MIT, 纯本地零依赖)",
+  "installed_tools": ["qrcode", "barcode"],
+  "verification": "headless 进程正常启动无报错；qrcode 工具实测成功：将 https://example.com 生成 ASCII 二维码预览并返回"
+}

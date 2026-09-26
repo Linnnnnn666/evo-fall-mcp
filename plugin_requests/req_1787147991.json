@@ -1,0 +1,19 @@
+{
+ "capability": "文本统计：统计一段文本的字数、行数、词数",
+ "tools": [
+  {
+   "name": "text_stats",
+   "desc": "统计文本的字数/行数/词数",
+   "input": "文本",
+   "output": "字数/行数/词数"
+  }
+ ],
+ "task_type": "data-processing",
+ "urgency": "low",
+ "requester_task": "全链路验收-B3",
+ "status": "done",
+ "started_at": "2026-08-19 21:59:51",
+ "installed_plugin": "text-stats",
+ "installed_tools": ["text_stats"],
+ "source": "self-made"
+}

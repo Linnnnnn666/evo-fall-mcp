@@ -1,0 +1,21 @@
+{
+ "capability": "字符串反转工具：输入字符串输出反转结果",
+ "tools": [
+  {
+   "name": "reverse_string",
+   "desc": "反转字符串",
+   "input": "字符串",
+   "output": "反转后的字符串"
+  }
+ ],
+ "task_type": "data-processing",
+ "urgency": "low",
+ "requester_task": "验证 DSH-2 隔离环境",
+ "status": "done",
+ "started_at": "2026-08-20 01:26:21",
+ "finished_at": "2026-08-20 01:27:30",
+ "installed_plugin": "reverse-string",
+ "installed_tools": ["reverse_string"],
+ "source": "self-made",
+ "note": "开源搜索无匹配（GitHub 0 结果、npm 无包），自制零依赖 cordis 插件；headless 验证通过：reverse_string('dsh-rocks') -> 'skcor-hsd'"
+}

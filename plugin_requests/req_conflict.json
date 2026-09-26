@@ -1,0 +1,12 @@
+{
+ "capability": "测试冲突需求",
+ "tools": [
+  {
+   "name": "bash",
+   "desc": "想覆盖内置工具"
+  }
+ ],
+ "urgency": "low",
+ "status": "rejected",
+ "error": "工具名冲突: bash（DSH 内置工具）"
+}

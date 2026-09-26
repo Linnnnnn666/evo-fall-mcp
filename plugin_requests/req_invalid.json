@@ -1,0 +1,12 @@
+{
+ "capability": "测试非法需求",
+ "tools": [
+  {
+   "name": "Bad Tool",
+   "desc": ""
+  }
+ ],
+ "urgency": "weird",
+ "status": "rejected",
+ "error": "需求校验失败: 工具名不合法: 'Bad Tool'（需小写字母数字下划线，≤40字符）"
+}

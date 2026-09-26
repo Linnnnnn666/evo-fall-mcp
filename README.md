@@ -2,7 +2,7 @@
 
 > **一句话**：用语音或文字指挥 AI 智能体，为 ESP32 板卡完成「写固件 → 编译 → OTA 部署 → 遥测验收 → 经验沉淀」的完整开发闭环——**核心链路已验证、架构完整、持续迭代中的系统原型**，双层自进化，人在环兜底。
 
-> **English abstract**: An **MCP (Model Context Protocol) server that turns an LLM agent into a hardware developer** — 47 tools covering firmware build/flash/**OTA** deployment, telemetry **self-validation**, TTS broadcasting, a **tool factory**, an **experience memory**, and a plugin poller for **self-evolving** capabilities. Bridges AI agents (voice or chat) to **ESP32** boards over MQTT/HTTP/WebSocket. Python (asyncio), stdio/websocket transports, MIT licensed. Part of the EvoAgent system — see [evo-firmware](https://github.com/Linnnnnn666/evo-firmware) and [evo-voice-terminal](https://github.com/Linnnnnn666/evo-voice-terminal).
+> **English abstract**: An **MCP (Model Context Protocol) server that turns an LLM agent into a hardware developer** — 48 tools covering firmware build/flash/**OTA** deployment, telemetry **self-validation**, TTS broadcasting, a **tool factory**, an **experience memory**, and a plugin poller for **self-evolving** capabilities. Bridges AI agents (voice or chat) to **ESP32** boards over MQTT/HTTP/WebSocket. Python (asyncio), stdio/websocket transports, MIT licensed. Part of the EvoAgent system — see [evo-firmware](https://github.com/Linnnnnn666/evo-firmware) and [evo-voice-terminal](https://github.com/Linnnnnn666/evo-voice-terminal).
 
 ```
                               ┌──────────────┐
@@ -26,7 +26,7 @@
                  │ 工具调用    └────────────────────────────┘
                  ▼
         ┌───────────────────────────────────────────────────┐
-        │ 能力中枢 (fall-mcp) —— 47 工具                    │
+        │ 能力中枢 (fall-mcp) —— 48 工具                    │
         │ 部署/烧录/播报/自验收/门控/工具工厂/经验库/插件轮询│
         └───────┬──────────────────────────┬────────────────┘
                 │ MQTT / HTTP / OTA        │ 遥测 · 事件回流
@@ -84,11 +84,17 @@ DSH-1（干活者，headless profile）
         → 装坏了？DSH-2 修复：最小改动 + 坏插件移入 quarantine/ 隔离区
 ```
 
-真实案例：DSH-1 干活时发现需要 base64/字符串反转/文本统计能力 → 写需求 →
-DSH-2 造出 `base64-codec` / `reverse-string` / `text-stats` 三个插件装入 →
+真实案例：DSH-1 干活时发现需要 base64/字符串反转/文本统计/雷达帧解析能力 → 写需求 →
+DSH-2 造出 `base64-codec` / `reverse-string` / `text-stats` / **`ld6002b-frame`** 四个插件装入 →
 DSH-1 之后自带这些能力（**quarantine/ 隔离区里躺着装坏过的插件——可回滚的进化**）。
 
+> 最新的 `ld6002b-frame`（2026-09-27）对应**真实工程痛点**：雷达 UART 丢字节导致帧错位，
+> 需要一个把十六进制帧解析成结构化字段、并定位校验失败的调试工具。DSH-2 先搜市场无果后自制，
+> 自带协议帧结构文档与消息类型表。**一次完整的端到端进化实录**见
+> [`docs/DSH_UPGRADE_20260927.md`](docs/DSH_UPGRADE_20260927.md)（含时间线与独立验证证据）。
+
 > 📦 **实物都在本仓库**：插件产物见 [`plugins/`](plugins/README.md)（DSH-2 真实制造的进化成果）；
+> 需求输入侧（含 2 份被校验拦下的病理样本）见 [`plugin_requests/`](plugin_requests/)；
 > 双角色装配全流程见 [`docs/DSH_EVOLUTION_SETUP.md`](docs/DSH_EVOLUTION_SETUP.md)。
 
 ### 双层闭环（合起来看）
@@ -97,7 +103,7 @@ DSH-1 之后自带这些能力（**quarantine/ 隔离区里躺着装坏过的插
        用户需求
           │
           ▼
-   ┌─────────────┐   复盘① 值得固化？ ──是──► 工具工厂（编译+验证）──► 能力中枢 47+ 工具
+   ┌─────────────┐   复盘① 值得固化？ ──是──► 工具工厂（编译+验证）──► 能力中枢 48+ 工具
    │   DSH-1     │                             ▲
    │   干活者     │──── 干完活 ──► 经验库（bigram）└── 下次自动注入经验
    └──────┬──────┘
@@ -133,7 +139,7 @@ DSH-1 之后自带这些能力（**quarantine/ 隔离区里躺着装坏过的插
 | 仓库 | 角色 | 一句话 |
 |------|------|--------|
 | **[evo-firmware](https://github.com/Linnnnnn666/evo-firmware)** | 硬件端 | ESP32-S3 固件集合：跌倒检测板（端侧 AI）、云端烧录板、配置化引导固件 |
-| **[evo-fall-mcp](https://github.com/Linnnnnn666/evo-fall-mcp)** | 能力中枢 | MCP 服务器（47 工具）：部署/烧录/播报/自验收/自进化，连接 AI 与硬件 |
+| **[evo-fall-mcp](https://github.com/Linnnnnn666/evo-fall-mcp)** | 能力中枢 | MCP 服务器（48 工具）：部署/烧录/播报/自验收/自进化，连接 AI 与硬件 |
 | **[evo-voice-terminal](https://github.com/Linnnnnn666/evo-voice-terminal)** | 语音入口 | 语音板板卡包：唤醒「你好小智」→ 语音对话 → TTS 播报 |
 
 **本仓库是其中的「能力中枢」**——AI 与硬件之间的"手"：所有部署、烧录、播报、验收、进化动作都通过这里的工具完成。
@@ -142,7 +148,7 @@ DSH-1 之后自带这些能力（**quarantine/ 隔离区里躺着装坏过的插
 
 # EvoAgent Capability Hub (fall-mcp)
 
-连接语音服务员（xiaozhi）、DSH（DeepSeek Harness 自动化智能体）与硬件设备的 MCP 服务器。47 个工具，覆盖部署/烧录/指令/接入/自验收/自进化/确认反馈全链路。
+连接语音服务员（xiaozhi）、DSH（DeepSeek Harness 自动化智能体）与硬件设备的 MCP 服务器。48 个工具，覆盖部署/烧录/指令/接入/自验收/自进化/确认反馈全链路。
 
 ## 一次完整的迭代，系统内部发生了什么
 
@@ -165,10 +171,11 @@ DSH 改完 C++ 代码
 ## MCP 端点与工具
 
 - **MCP 端点**：`ws://127.0.0.1:8002/mcp/`（JSON-RPC 2.0）
-- **工具**：47 个，分三类——
+- **工具**：48 个，分四类——
   - **核心工具**（生产链路验证）：部署/烧录/播报/自验收/门控/进化——`dev_ota_deploy`、`dev_self_verify`、`dev_board_command`、`dev_first_flash`、`dev_flash_*`、`dev_speak`、`dev_enable/disable_developer_mode`、`dev_create_tool` 等
   - **查询工具**：`query_fall_*`（跌倒监测）、`query_board_telemetry`（板卡状态）及系统/外部数据查询
-  - **动态生成工具**（AI 自造、随需注册，示例性）：如 `query_silver_price` 等——验证"工具工厂"机制的实物
+  - **动态生成工具**（AI 自造、随需注册）：如 `query_silver_price`、`schedule_voice_announce`、`inventory_ota_repo` 等——验证"工具工厂"机制的实物
+  - **插件工具**（DSH-2 造的插件暴露给 DSH-1）：`base64_encode/decode`、`text_stats`、`reverse_string`、`parse_ld6002b_frame`——第二层自进化的产物
 
 > 成熟度说明：核心工具经生产链路实测；查询/动态工具覆盖典型场景，属持续迭代中的原型组件。
 
@@ -234,7 +241,7 @@ cp .env.example .env          # 填 MQTT/API keys（无 MQTT 时查询类工具�
 cp devices.example.json devices.json
 
 # 3. 启动能力中枢（MCP 服务器）
-python3 mcp_server.py         # 监听 ws://127.0.0.1:8002/mcp/，47 个工具
+python3 mcp_server.py         # 监听 ws://127.0.0.1:8002/mcp/，48 个工具
 
 # 4. 验证：用任意 MCP 客户端调用只读工具
 #    例如 dev_list_boards（设备注册表）/ query_system_status（服务器状态）
@@ -247,13 +254,13 @@ python3 mcp_server.py         # 监听 ws://127.0.0.1:8002/mcp/，47 个工具
 ← {"jsonrpc":"2.0","id":1,"result":{"serverInfo":{"name":"fall-monitor-mcp","version":"1.0.0"}}}
 
 → {"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}
-← {"jsonrpc":"2.0","id":2,"result":{"tools":[{...47 个工具...}]}}
+← {"jsonrpc":"2.0","id":2,"result":{"tools":[{...48 个工具...}]}}
 
 → {"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"dev_list_boards","arguments":{}}}
 ← {"jsonrpc":"2.0","id":3,"result":{"content":[{"type":"text","text":"{\"ok\":true,\"devices\":[{\"device_id\":\"board-xxx\",\"model\":\"...\",\"capabilities\":[\"ota\",\"telemetry\"]}]}"}]}}
 ```
 
-5 分钟内：起服务 → 看到 47 个工具 → 调用只读工具拿到真实返回——**不需要任何硬件**。
+5 分钟内：起服务 → 看到 48 个工具 → 调用只读工具拿到真实返回——**不需要任何硬件**。
 
 ### 3 层：完整系统
 
@@ -274,6 +281,10 @@ python3 mcp_server.py         # 监听 ws://127.0.0.1:8002/mcp/，47 个工具
 - `chore` MIT 许可（08-25）
 - `feat(docker)` 完整栈容器化——fall-mcp/mqtt/caddy/xiaozhi-server compose 一键启动，系统记忆卷持久化（09-06）
 - `feat(evidence)` 自进化档案——evolution.log 审计日志 + manifest 快照公开（09-06）
+- `feat(plugin)` 第四次插件进化：DSH-2 产出 `ld6002b-frame`（LD6002B 雷达帧解析），并公开需求输入侧
+  `plugin_requests/`（含 2 份被校验拦下的病理样本）（09-27）
+- `docs(ops)` DSH 升级与自进化闭环实录：升级到 0.1.5-rc.3、收敛标准模式、端到端验证与遗留问题（09-27）
+- `fix(sanitizer)` 脱敏脚本正则修正：避免把 `task-review` 误判为 API Key 前缀（09-27）
 
 ## License
 

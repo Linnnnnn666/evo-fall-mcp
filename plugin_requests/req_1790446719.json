@@ -1,0 +1,30 @@
+{
+ "capability": "LD6002B 毫米波雷达 TinyFrame 帧解析与校验：把串口/日志抓到的十六进制帧字符串解析为结构化字段，并按协议校验 HCK/DCK（均为 XOR 后取反）",
+ "tools": [
+  {
+   "name": "parse_ld6002b_frame",
+   "desc": "解析 LD6002B TinyFrame 十六进制帧：校验 SOF(0x01)/长度上限/双校验和，输出 id/len/type/payload；payload 长度 ≥12 字节时按小端 float32 解码为点云（x/y/z/speed）",
+   "input": "十六进制帧字符串（可含空格或 0x 前缀），例如 '01 0001 000C 0001' 开头的完整帧",
+   "output": "JSON：valid / hck_ok / dck_ok / id / len / type / payload_hex / floats / reason"
+  }
+ ],
+ "task_type": "data-processing",
+ "urgency": "low",
+ "requester_task": "DSH 升级后自进化闭环验证（2026-09-27）：为雷达 UART 帧调试提供解析工具，对应跌倒板 bring-up 时逐字节状态机排障场景",
+ "status": "done",
+ "started_at": "2026-09-27 02:18:45",
+ "installed_plugin": "ld6002b-frame",
+ "installed_tools": [
+  "parse_ld6002b_frame"
+ ],
+ "source": "self-made",
+ "finished_at": "2026-09-27 02:22:10",
+ "verification": {
+  "method": "headless dsh 进程实调（先 bash 触发工具全量开放）",
+  "positive_case": "01 00 01 00 0C 00 01 F2 00 00 80 3E 00 00 E0 3F 00 00 60 C0 3E -> valid=true hck_ok=true dck_ok=true floats=[0.25,1.75,-3.5]",
+  "negative_case": "01 00 02 00 10 0A 04 E2 ... 00 -> valid=false hck_ok=true dck_ok=false dck.got=0x00 dck.calc=0x50",
+  "offline_selftest": "10/10 协议向量 + 5/5 边界用例通过（node --check 通过，无危险模式）",
+  "plugin_path": "/opt/dsh-plugins/ld6002b-frame.mjs",
+  "patch_backup": "/root/.dsh/profiles/headless/cordis.patch.yml.bak.1790446902"
+ }
+}

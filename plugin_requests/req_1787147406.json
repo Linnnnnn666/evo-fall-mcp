@@ -1,0 +1,22 @@
+{
+ "capability": "MD5/SHA 哈希计算：字符串哈希",
+ "tools": [
+  {
+   "name": "hash_string",
+   "desc": "计算字符串的 MD5/SHA1/SHA256 哈希",
+   "input": "字符串+算法",
+   "output": "哈希值"
+  }
+ ],
+ "task_type": "data-processing",
+ "urgency": "low",
+ "requester_task": "P0约束测试-合法需求",
+ "status": "done",
+ "started_at": "2026-08-19 21:50:11",
+ "source": "market",
+ "installed_plugin": "@deepseek-ai/dsh-tool-encoding",
+ "installed_tools": [
+  "encoding (action=hash: md5/sha1/sha256/sha512)"
+ ],
+ "finished_at": "2026-08-19 21:52:00"
+}
