@@ -2193,6 +2193,51 @@ def _save_plugins(p: dict) -> None:
         json.dump(p, f, ensure_ascii=False, indent=1)
 
 
+_WARNED_MISSING_PLUGIN: set = set()  # 同一插件名的"文件缺失"告警每进程只记一次
+
+
+def _register_installed_plugin(req: dict, req_name: str = "") -> dict | None:
+    """把 DSH-2 建成的插件登记进 plugins.json（去重与冲突校验的事实来源）。
+
+    此前 _save_plugins 无任何调用点，_load_plugins 恒返回 {"plugins": {}}，
+    于是「防重复」与「已装插件」冲突校验永远命中不了。
+    幂等：同名插件内容未变则不重复写盘、不重复记事件。
+    注册以"文件真实存在"为准 —— req 标了 done 但插件文件已被删除的（如从市场装的
+    dsh-qrcode / dsh-tool-encoding），不得登记为已安装能力。
+    """
+    import time  # 本模块无全局 import time，按本文件既有风格函数内导入
+    name = req.get("installed_plugin") or ""
+    tools = sorted({t for t in (req.get("installed_tools") or []) if t})
+    if not name or not tools:
+        return None
+    plugin_file = os.path.join(PLUGINS_DIR, f"{name}.mjs")
+    if not os.path.isfile(plugin_file):
+        if name not in _WARNED_MISSING_PLUGIN:
+            _WARNED_MISSING_PLUGIN.add(name)
+            _log_evolution(
+                "plugin_register_warn",
+                f"{name}: 需求标 done 但插件文件缺失 {plugin_file}，不登记（以文件为准）",
+            )
+        return None
+    entry = {
+        "tools": tools,
+        "source": req.get("source", "") or "unknown",
+        "request": req_name,
+        "installed_at": req.get("finished_at") or time.strftime("%Y-%m-%d %H:%M:%S"),
+    }
+    reg = _load_plugins()
+    reg.setdefault("plugins", {})
+    if reg["plugins"].get(name) == entry:
+        return entry
+    reg["plugins"][name] = entry
+    _save_plugins(reg)
+    _log_evolution(
+        "plugin_installed",
+        f"{name}: {','.join(tools)} (source={entry['source']}, req={req_name})",
+    )
+    return entry
+
+
 def _run_dsh2(req_path: str) -> None:
     """起 DSH-2 进程执行插件制造+安装（模板内完成全部工作与状态标记）。
     DSH-2 是受信任的制造者：全权限（需写 /opt/dsh-plugins 与 headless patch）。"""
@@ -2232,8 +2277,11 @@ def _run_dsh2(req_path: str) -> None:
                 req["status"] = "failed"
                 req["error"] = f"DSH-2 异常退出 rc={proc.returncode}: {(proc.stderr or '')[-300:]}"
                 json.dump(req, open(req_path, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
-        except Exception:
-            pass
+            elif req.get("status") == "done":
+                # 以 DSH-2 写入的 done 为准（进程返回码不等于结果），落盘注册表 + 记安装事件
+                _register_installed_plugin(req, os.path.basename(req_path))
+        except Exception as exc:
+            print(f"[plugin-poller] plugin register error: {exc}", flush=True)
     except Exception as exc:
         print(f"[plugin-poller] DSH-2 ERROR {req_path}: {exc}", flush=True)
         try:

@@ -1,0 +1,26 @@
+{
+ "capability": "进化日志摘要：把 EvoAgent 的 evolution.log 文本解析成结构化摘要，便于监工与复盘时快速看清一段时间内发生了什么（事件类型计数、时间跨度、按小时分布、异常条目），无需人工逐行读日志",
+ "tools": [
+  {
+   "name": "summarize_evolution_log",
+   "desc": "解析进化日志文本（每行形如 [YYYY-MM-DD HH:MM:SS] event_type | detail），输出事件总数、时间跨度、按事件类型计数、按小时分布，并把 failed/rejected/warn/skipped 类条目单独列出作为需关注项",
+   "input": "进化日志全文（多行字符串，可直接粘贴）",
+   "output": "JSON: total / first / last / span_hours / by_type / by_hour / anomalies[]"
+  }
+ ],
+ "task_type": "data-processing",
+ "urgency": "low",
+ "requester_task": "审计缺口修复后的端到端验证（2026-09-28）：补齐 plugin_installed 审计事件后，需要一个能把日志读薄的工具，配合监工体系做进化活动复盘",
+ "status": "done",
+ "started_at": "2026-09-28 03:07:43",
+ "installed_plugin": "evolution-log-summary",
+ "installed_tools": [
+  "summarize_evolution_log"
+ ],
+ "source": "self-made",
+ "installed_at": "2026-09-28 03:20:00",
+ "finished_at": "2026-09-28 03:20:00",
+ "verified": true,
+ "verification": "headless 进程实测：先 bash pwd 触发全量工具集，再调用 summarize_evolution_log，返回 total=4 且 by_type 四类各 1 条，DSH 启动无报错（exit 0）",
+ "note": "market 未找到合格开源插件（dsh-plugin/cordis-plugin topic 与 npm 检索均无 ≥200★ 且功能匹配者），按兜底流程自制并安装；插件路径 /opt/dsh-plugins/evolution-log-summary.mjs"
+}

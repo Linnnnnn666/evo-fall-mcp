@@ -1,0 +1,16 @@
+{
+ "capability": "文本统计（重复投递测试）：统计字数/行数/词数 —— 该能力已由 text-stats 插件提供，用于验证审计缺口修复后「已装插件」冲突校验与重复去重是否真的生效",
+ "tools": [
+  {
+   "name": "text_stats",
+   "desc": "统计文本字数/行数/词数",
+   "input": "文本字符串",
+   "output": "JSON: chars/lines/words"
+  }
+ ],
+ "task_type": "data-processing",
+ "urgency": "low",
+ "requester_task": "审计缺口修复验证（2026-09-28）：确认重复能力需求不再被重复构建，而是被校验拦下",
+ "status": "rejected",
+ "error": "工具名冲突: text_stats（已装插件工具）"
+}

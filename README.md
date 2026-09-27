@@ -84,17 +84,20 @@ DSH-1（干活者，headless profile）
         → 装坏了？DSH-2 修复：最小改动 + 坏插件移入 quarantine/ 隔离区
 ```
 
-真实案例：DSH-1 干活时发现需要 base64/字符串反转/文本统计/雷达帧解析能力 → 写需求 →
-DSH-2 造出 `base64-codec` / `reverse-string` / `text-stats` / **`ld6002b-frame`** 四个插件装入 →
+真实案例：DSH-1 干活时发现需要 base64/字符串反转/文本统计/雷达帧解析/日志摘要能力 → 写需求 →
+DSH-2 造出 `base64-codec` / `reverse-string` / `text-stats` / **`ld6002b-frame`** / `evolution-log-summary` 五个插件装入 →
 DSH-1 之后自带这些能力（**quarantine/ 隔离区里躺着装坏过的插件——可回滚的进化**）。
 
-> 最新的 `ld6002b-frame`（2026-09-27）对应**真实工程痛点**：雷达 UART 丢字节导致帧错位，
-> 需要一个把十六进制帧解析成结构化字段、并定位校验失败的调试工具。DSH-2 先搜市场无果后自制，
-> 自带协议帧结构文档与消息类型表。**一次完整的端到端进化实录**见
-> [`docs/DSH_UPGRADE_20260927.md`](docs/DSH_UPGRADE_20260927.md)（含时间线与独立验证证据）。
+> `ld6002b-frame`（2026-09-27）对应**真实工程痛点**：雷达 UART 丢字节导致帧错位，
+> 需要一个把十六进制帧解析成结构化字段、并定位校验失败的调试工具。
+> `evolution-log-summary`（2026-09-28）对应**审计痛点**：安装审计事件补齐后，需要一个
+> 能把 `evolution.log` 读薄的复盘工具。两者都是 DSH-2 先搜市场无果后自制。
+> **两次完整的端到端进化实录**见
+> [`docs/DSH_UPGRADE_20260927.md`](docs/DSH_UPGRADE_20260927.md) 与
+> [`docs/AUDIT_GAP_FIX_20260928.md`](docs/AUDIT_GAP_FIX_20260928.md)（含时间线与独立验证证据）。
 
 > 📦 **实物都在本仓库**：插件产物见 [`plugins/`](plugins/README.md)（DSH-2 真实制造的进化成果）；
-> 需求输入侧（含 2 份被校验拦下的病理样本）见 [`plugin_requests/`](plugin_requests/)；
+> 需求输入侧（含 3 份被校验拦下的病理样本）见 [`plugin_requests/`](plugin_requests/)；
 > 双角色装配全流程见 [`docs/DSH_EVOLUTION_SETUP.md`](docs/DSH_EVOLUTION_SETUP.md)。
 
 ### 双层闭环（合起来看）
@@ -175,7 +178,7 @@ DSH 改完 C++ 代码
   - **核心工具**（生产链路验证）：部署/烧录/播报/自验收/门控/进化——`dev_ota_deploy`、`dev_self_verify`、`dev_board_command`、`dev_first_flash`、`dev_flash_*`、`dev_speak`、`dev_enable/disable_developer_mode`、`dev_create_tool` 等
   - **查询工具**：`query_fall_*`（跌倒监测）、`query_board_telemetry`（板卡状态）及系统/外部数据查询
   - **动态生成工具**（AI 自造、随需注册）：如 `query_silver_price`、`schedule_voice_announce`、`inventory_ota_repo` 等——验证"工具工厂"机制的实物
-  - **插件工具**（DSH-2 造的插件暴露给 DSH-1）：`base64_encode/decode`、`text_stats`、`reverse_string`、`parse_ld6002b_frame`——第二层自进化的产物
+  - **插件工具**（DSH-2 造的插件暴露给 DSH-1）：`base64_encode/decode`、`text_stats`、`reverse_string`、`parse_ld6002b_frame`、`summarize_evolution_log`——第二层自进化的产物
 
 > 成熟度说明：核心工具经生产链路实测；查询/动态工具覆盖典型场景，属持续迭代中的原型组件。
 
@@ -285,6 +288,10 @@ python3 mcp_server.py         # 监听 ws://127.0.0.1:8002/mcp/，48 个工具
   `plugin_requests/`（含 2 份被校验拦下的病理样本）（09-27）
 - `docs(ops)` DSH 升级与自进化闭环实录：升级到 0.1.5-rc.3、收敛标准模式、端到端验证与遗留问题（09-27）
 - `fix(sanitizer)` 脱敏脚本正则修正：避免把 `task-review` 误判为 API Key 前缀（09-27）
+- `fix(plugin)` **审计缺口修复**：插件注册表落盘（`plugins.json`）+ `plugin_installed` 安装审计事件，
+  并回填 4 个历史插件；修复后工具名冲突检测真正生效（重复能力需求 5 秒内被拦下，不再重复构建）（09-28）
+- `feat(plugin)` **第五次插件进化**：DSH-2 产出 `evolution-log-summary`（进化日志摘要），
+  用于验证修复后的完整链路端到端可用（09-28）
 
 ## License
 
